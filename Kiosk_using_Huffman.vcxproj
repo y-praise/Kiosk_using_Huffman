@@ -129,12 +129,14 @@
   <ItemGroup>
     <ClCompile Include="CustomerMode.cpp" />
     <ClCompile Include="Huffman.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerMode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomerMode.h" />
     <ClInclude Include="Huffman.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="ManagerMode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

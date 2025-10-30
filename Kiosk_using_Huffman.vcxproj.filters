@@ -27,6 +27,9 @@
     <ClCompile Include="Huffman.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="LinkedList.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ManagerMode.h">
@@ -36,6 +39,9 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="Huffman.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

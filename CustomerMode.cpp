@@ -1,9 +1,151 @@
 #include "CustomerMode.h"
 
-void CustomerMode::printMenu() {
+void CustomerMode::run() {
+	totalPrice = 0;
+	loadMenu();
+	char mode;
 
+	do {
+		loadMenu();
+		cout << "\n\n==================Menu==================" << endl;
+		for (int i = 0; i < menuItems.size(); i++) {
+			cout << i+1 << ". " << menuItems[i] << ": " << menuPrices[i] << endl;
+		}
+		cout << "========================================" << endl;
+		cout << "Add to Order List: 1 ~ " << menuItems.size() << " (Select Item Number)" << endl;
+		cout << "Edit Order List: s" << endl;
+		cout << "Complete Order: c" << endl;
+		cout << "Exit(Cancel Order): e" << endl;
+		cout << "========================================" << endl;
+		cout << "Select: ";
+		cin >> mode;
+
+		if (isalpha(mode)) {
+			switch (mode) {
+			case 's':
+				editOrder();
+				break;
+			case 'c':
+				completeOrder();
+				return;
+			case 'e':
+				return;
+			default:
+				cout << "Invalid mode selected. Exiting." << endl;
+				break;
+			}
+		}
+		else if (isdigit(mode)) {
+			int itemNum = mode -'0';
+			cout << itemNum << endl;
+			if (itemNum >= 1 && itemNum <= menuItems.size()) {
+				addToOrder(itemNum);
+			}
+			else
+				cout << "Invalid item number selected." << endl;
+		}
+		else
+			cout << "Invalid mode selected. Exiting." << endl;
+
+	} while (mode >= 1 || mode <= 3);
 }
 
-void CustomerMode::addOrder(string add_item) {
+void CustomerMode::loadMenu() {
+	ifstream menuFile;
+	menuFile.open("menu.txt");
 
+	menuItems.clear();
+	menuPrices.clear();
+
+	if (menuFile.is_open()) {
+		string line;
+
+		while (getline(menuFile, line)) {
+			istringstream iss(line);
+			string word;
+			int price;
+
+			while (iss >> word >> price) {
+				menuItems.push_back(word);
+				menuPrices.push_back(price);
+			}
+		}
+		menuFile.close();
+	}
+	else
+		cout << "Unable to open file" << endl;
+}
+
+void CustomerMode::addToOrder(int num) {
+	num--;
+	orderList.add(menuItems[num]);
+	totalPrice += menuPrices[num];
+}
+
+void CustomerMode::deleteFromOrder(int num) {
+	num--;
+	Node* itemNode = orderList.locate(num);
+	if (itemNode != nullptr) {
+		string itemName = itemNode->data;
+		auto it = find(menuItems.begin(), menuItems.end(), itemName);
+		if (it != menuItems.end()) {
+			int index = distance(menuItems.begin(), it);
+			int itemPrice = menuPrices[index];
+			removedItem.push(itemName);
+			removedItemPrice.push(itemPrice);
+			orderList.remove(itemName);
+			totalPrice -= itemPrice;
+		}
+	}
+	else {
+		cout << "Invalid item number." << endl;
+	}
+}
+
+void CustomerMode::completeOrder() {
+	cout << "complete order" << endl;
+}
+
+void CustomerMode::editOrder() {
+	int mode;
+	do {
+		cout << "\n\n==============Order List==============" << endl;
+		orderList.print();
+		cout << "Total Price: " << totalPrice << endl;
+		cout << "========================================" << endl;
+		cout << "Chose One" << endl;
+		cout << "1. Delete Item" << endl;
+		cout << "2. Restore Item" << endl;
+		cout << "3. Exit" << endl;
+		cout << "========================================" << endl;
+		cout << "Select Mode: ";
+		cin >> mode;
+
+		switch (mode)
+		{
+		case 1:
+		{
+			int item_num;
+			cout << "Enter Item number: ";
+			cin >> item_num;
+			deleteFromOrder(item_num);
+			break;
+		}
+		case 2:
+		{
+			if (!removedItem.empty()) {
+				orderList.add(removedItem.top());
+				totalPrice += removedItemPrice.top();
+				removedItem.pop();
+				removedItemPrice.pop();
+			}
+			break;
+		}
+		case 3:
+			return;
+		default:
+			cout << "Invalid mode selected. Exiting." << endl;
+		}
+
+	} while (mode >= 1 || mode <= 3);
 }
