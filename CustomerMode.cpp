@@ -13,22 +13,22 @@ void CustomerMode::run() {
 		}
 		cout << "========================================" << endl;
 		cout << "Add to Order List: 1 ~ " << menuItems.size() << " (Select Item Number)" << endl;
-		cout << "Edit Order List: s" << endl;
+		cout << "Show Order List: o" << endl;
 		cout << "Complete Order: c" << endl;
-		cout << "Exit(Cancel Order): e" << endl;
+		cout << "Exit(Cancel Order): q" << endl;
 		cout << "========================================" << endl;
 		cout << "Select: ";
 		cin >> mode;
 
 		if (isalpha(mode)) {
 			switch (mode) {
-			case 's':
+			case 'o':
 				editOrder();
 				break;
 			case 'c':
 				completeOrder();
 				return;
-			case 'e':
+			case 'q':
 				return;
 			default:
 				cout << "Invalid mode selected. Exiting." << endl;
@@ -37,7 +37,6 @@ void CustomerMode::run() {
 		}
 		else if (isdigit(mode)) {
 			int itemNum = mode -'0';
-			cout << itemNum << endl;
 			if (itemNum >= 1 && itemNum <= menuItems.size()) {
 				addToOrder(itemNum);
 			}
@@ -103,7 +102,7 @@ void CustomerMode::deleteFromOrder(int num) {
 }
 
 void CustomerMode::completeOrder() {
-	cout << "complete order" << endl;
+	cout << "Order Received! (Implementing)" << endl;
 }
 
 void CustomerMode::editOrder() {
@@ -113,12 +112,11 @@ void CustomerMode::editOrder() {
 		orderList.print();
 		cout << "Total Price: " << totalPrice << endl;
 		cout << "========================================" << endl;
-		cout << "Chose One" << endl;
 		cout << "1. Delete Item" << endl;
 		cout << "2. Restore Item" << endl;
 		cout << "3. Exit" << endl;
 		cout << "========================================" << endl;
-		cout << "Select Mode: ";
+		cout << "Select: ";
 		cin >> mode;
 
 		switch (mode)

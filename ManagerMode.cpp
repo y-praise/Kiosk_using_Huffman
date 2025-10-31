@@ -7,12 +7,11 @@ void ManagerMode::run() {
 	int mode;
 	do {
 		cout << "\n========================================" << endl;
-		cout << "Chose One" << endl;
 		cout << "1. Order History" << endl;
 		cout << "2. Edit Menu" << endl;
 		cout << "3. Exit" << endl;
 		cout << "========================================" << endl;
-		cout << "Select Mode: ";
+		cout << "Select: ";
 		cin >> mode;
 
 		switch (mode)
@@ -44,7 +43,6 @@ void ManagerMode::editMenu() {
 			cout << menuItems[i] << ": " << menuPrices[i] << endl;
 		}
 		cout << "========================================" << endl;
-		cout << "Chose One" << endl;
 		cout << "1. Add Item" << endl;
 		cout << "2. Delete Item" << endl;
 		cout << "3. Exit" << endl;
