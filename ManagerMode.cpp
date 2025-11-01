@@ -6,6 +6,11 @@ using namespace std;
 void ManagerMode::run() {
 	int mode;
 	do {
+		#ifdef _WIN32
+				system("cls");
+		#else
+				system("clear");
+		#endif
 		cout << "\n========================================" << endl;
 		cout << "1. Order History" << endl;
 		cout << "2. Edit Menu" << endl;
@@ -17,16 +22,21 @@ void ManagerMode::run() {
 		switch (mode)
 		{
 		case 1:
-
+			cout << "Implementing (Press Enter)" << endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get();
+			break;
 		case 2:
 			editMenu();
 			break;
 		case 3:
 			return;
 		default:
-			cout << "Invalid mode selected. Exiting." << endl;
+			cout << "Invalid mode selected (Press Enter)";
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get();
 		}
-	} while (mode < 1 || mode > 3);
+	} while (true);
 }
 
 void ManagerMode::checkOrderHistory() {
@@ -38,6 +48,11 @@ void ManagerMode::editMenu() {
 	int mode;
 	do {
 		loadMenu();
+		#ifdef _WIN32
+				system("cls");
+		#else
+				system("clear");
+		#endif
 		cout << "\n\n==================Menu==================" << endl;
 		for (int i = 0; i < menuItems.size(); i++) {
 			cout << menuItems[i] << ": " << menuPrices[i] << endl;
@@ -74,9 +89,11 @@ void ManagerMode::editMenu() {
 		case 3:
 			return;
 		default:
-			cout << "Invalid mode selected. Exiting." << endl;
+			cout << "Invalid mode selected (Press Enter)";
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get();
 		}
-	} while (mode >= 1 || mode <= 3);
+	} while (true);
 }
 
 void ManagerMode::loadMenu() {

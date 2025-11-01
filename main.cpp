@@ -3,16 +3,23 @@
 #include <iostream>
 #include "ManagerMode.h"
 #include "CustomerMode.h"
-
 using namespace std;
+
+void clear_screen() {
+#ifdef _WIN32
+	system("cls");
+#else
+	system("clear");
+#endif
+}
 
 int main() {
 	int mode;
-	
 
 	do {
-		cout << "\n\n========================================" << endl;
-		cout << "Chose Mode" << endl;
+		clear_screen();
+		cout << "\n========================================" << endl;
+		cout << "Choose Mode" << endl;
 		cout << "1. Customer Mode" << endl;
 		cout << "2. Manager Mode" << endl;
 		cout << "3. Exit" << endl;
@@ -40,9 +47,11 @@ int main() {
 			return 0;
 
 		default:
-			cout << "Invalid mode selected. Exiting." << endl;
+			cout << "Invalid mode selected (Press Enter)"; 
+			cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+			cin.get();
 		}
-	} while (mode >= 1 || mode <= 3);
+	} while (true);
 
     return 0;
 }

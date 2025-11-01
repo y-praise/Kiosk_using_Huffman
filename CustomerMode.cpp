@@ -3,11 +3,16 @@
 void CustomerMode::run() {
 	totalPrice = 0;
 	loadMenu();
-	char mode;
+	string mode;
 
 	do {
 		loadMenu();
-		cout << "\n\n==================Menu==================" << endl;
+		#ifdef _WIN32
+				system("cls");
+		#else
+				system("clear");
+		#endif
+		cout << "\n==================Menu==================" << endl;
 		for (int i = 0; i < menuItems.size(); i++) {
 			cout << i+1 << ". " << menuItems[i] << ": " << menuPrices[i] << endl;
 		}
@@ -20,33 +25,42 @@ void CustomerMode::run() {
 		cout << "Select: ";
 		cin >> mode;
 
-		if (isalpha(mode)) {
-			switch (mode) {
-			case 'o':
-				editOrder();
+		if (isalpha(mode[0])) {
+			switch (mode[0]) {
+			case 'o': 
+				editOrder(); 
 				break;
-			case 'c':
-				completeOrder();
-				return;
-			case 'q':
-				return;
-			default:
-				cout << "Invalid mode selected. Exiting." << endl;
-				break;
-			}
-		}
-		else if (isdigit(mode)) {
-			int itemNum = mode -'0';
-			if (itemNum >= 1 && itemNum <= menuItems.size()) {
-				addToOrder(itemNum);
-			}
-			else
-				cout << "Invalid item number selected." << endl;
-		}
-		else
-			cout << "Invalid mode selected. Exiting." << endl;
 
-	} while (mode >= 1 || mode <= 3);
+			case 'c': 
+				completeOrder(); 
+				return;
+
+			case 'q': 
+				return;
+
+			default: 
+				cout << "Invalid mode selected (Press Enter)";
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cin.get();
+			}
+		}
+		else if (isdigit(mode[0])) {
+			int itemNum = stoi(mode);
+			if (itemNum >= 1 && itemNum <= menuItems.size()) 
+				addToOrder(itemNum);
+			else {
+				cout << "Invalid item number selected (Press Enter)";
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cin.get();
+			}
+		}
+		else {
+			cout << "Invalid mode selected (Press Enter)";
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get();
+		}
+
+	} while (true);
 }
 
 void CustomerMode::loadMenu() {
@@ -79,6 +93,9 @@ void CustomerMode::addToOrder(int num) {
 	num--;
 	orderList.add(menuItems[num]);
 	totalPrice += menuPrices[num];
+	cout << menuItems[num] << " added to order list." << endl;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	cin.get();
 }
 
 void CustomerMode::deleteFromOrder(int num) {
@@ -108,6 +125,11 @@ void CustomerMode::completeOrder() {
 void CustomerMode::editOrder() {
 	int mode;
 	do {
+		#ifdef _WIN32
+				system("cls");
+		#else
+				system("clear");
+		#endif
 		cout << "\n\n==============Order List==============" << endl;
 		orderList.print();
 		cout << "Total Price: " << totalPrice << endl;
@@ -142,8 +164,10 @@ void CustomerMode::editOrder() {
 		case 3:
 			return;
 		default:
-			cout << "Invalid mode selected. Exiting." << endl;
+			cout << "Invalid mode selected (Press Enter)";
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get();
 		}
 
-	} while (mode >= 1 || mode <= 3);
+	} while (true);
 }
