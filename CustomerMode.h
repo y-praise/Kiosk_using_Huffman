@@ -19,6 +19,7 @@ private:
     void loadMenu();
     void addToOrder(int num);
 	void deleteFromOrder(int num);
+	void restoreItem();
     void completeOrder();
 	void editOrder();
 

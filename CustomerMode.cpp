@@ -118,6 +118,15 @@ void CustomerMode::deleteFromOrder(int num) {
 	}
 }
 
+void CustomerMode::restoreItem() {
+	if (!removedItem.empty()) {
+		orderList.add(removedItem.top());
+		totalPrice += removedItemPrice.top();
+		removedItem.pop();
+		removedItemPrice.pop();
+	}
+}
+
 void CustomerMode::completeOrder() {
 	cout << "Order Received! (Implementing)" << endl;
 }
@@ -153,12 +162,7 @@ void CustomerMode::editOrder() {
 		}
 		case 2:
 		{
-			if (!removedItem.empty()) {
-				orderList.add(removedItem.top());
-				totalPrice += removedItemPrice.top();
-				removedItem.pop();
-				removedItemPrice.pop();
-			}
+			restoreItem();
 			break;
 		}
 		case 3:
