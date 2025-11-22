@@ -1,4 +1,5 @@
 #include "CustomerMode.h"
+#include "Huffman.h"
 
 void CustomerMode::run() {
 	totalPrice = 0;
@@ -128,6 +129,8 @@ void CustomerMode::restoreItem() {
 }
 
 void CustomerMode::completeOrder() {
+	Huffman huff;
+	huff.compressOrder(orderList);
 	cout << "Order Received! (Implementing)" << endl;
 }
 
