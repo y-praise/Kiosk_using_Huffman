@@ -10,6 +10,32 @@ LinkedList::~LinkedList() {
     clear();
 }
 
+LinkedList::LinkedList(const LinkedList& other) {
+    this->head_ptr = nullptr;
+
+    Node* current_other = other.head_ptr;
+    while (current_other != nullptr) {
+        this->add(current_other->data);
+        current_other = current_other->link;
+    }
+}
+
+LinkedList& LinkedList::operator=(const LinkedList& other) {
+    if (this == &other)
+        return *this;
+
+    while (this->head_ptr != nullptr)
+        clear();
+
+    Node* current_other = other.head_ptr;
+    while (current_other != nullptr) {
+        this->add(current_other->data);
+        current_other = current_other->link;
+    }
+
+    return *this;
+}
+
 void LinkedList::add(const string& data) {
     Node* newNode = new Node(data);
     if (!head_ptr) {
