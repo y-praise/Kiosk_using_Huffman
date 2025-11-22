@@ -3,8 +3,4 @@ non-coffee 3000
 tea 3000
 ade 4000
 smoothie 4500
-test 2500
-test2 3500
-test3 6000
-test4 6000
-test5 1200
+test1 5000
