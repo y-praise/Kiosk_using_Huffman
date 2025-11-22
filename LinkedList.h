@@ -17,6 +17,9 @@ public:
     LinkedList();
     ~LinkedList();
 
+    LinkedList(const LinkedList& other);
+    LinkedList& operator=(const LinkedList& other);
+
     void add(const string& data);
     bool remove(const string& data);
     void print() const;
