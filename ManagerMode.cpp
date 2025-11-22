@@ -1,4 +1,5 @@
 #include "ManagerMode.h"
+#include "Huffman.h"
 #include <iostream>
 
 using namespace std;
@@ -14,7 +15,8 @@ void ManagerMode::run() {
 		cout << "\n========================================" << endl;
 		cout << "1. Order History" << endl;
 		cout << "2. Edit Menu" << endl;
-		cout << "3. Exit" << endl;
+		cout << "3. Compress Order History" << endl;
+		cout << "4. Exit" << endl;
 		cout << "========================================" << endl;
 		cout << "Select: ";
 		cin >> mode;
@@ -22,14 +24,38 @@ void ManagerMode::run() {
 		switch (mode)
 		{
 		case 1:
-			cout << "Implementing (Press Enter)" << endl;
+		{
+			#ifdef _WIN32
+						system("cls");
+			#else
+						system("clear");
+			#endif
+			cout << "==============Order History=============" << endl;
+			Huffman huff;
+			huff.decompress();
+			huff.printDecompressedOrders();
+			cout << "========================================" << endl;
+			cout << "(Press Enter)" << endl;
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			cin.get();
 			break;
+		}
+			
 		case 2:
+		{
 			editMenu();
 			break;
+		}
 		case 3:
+		{
+			Huffman huff;
+			huff.compressEntire();
+			cout << "Order History Compressed! (Press Enter)" << endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.get();
+			break;
+		}
+		case 4:
 			return;
 		default:
 			cout << "Invalid mode selected (Press Enter)";
@@ -150,4 +176,6 @@ void ManagerMode::saveMenu() {
 	}
 	else
 		cout << "Unable to open file" << endl;
+	Huffman huff;
+	huff.compressEntire();
 }
