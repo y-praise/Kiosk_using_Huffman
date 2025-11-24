@@ -1,23 +1,28 @@
 #include "Huffman.h"
 
+// order.txt의 헤더를 기준으로 주문 압축 후 저장
 void Huffman::compressOrder(LinkedList orderList) {
-	decompress();
+	decompress();	
 	orderLists.push_back(orderList);
 	saveCompressedOrder();
 }
 
+// 메뉴별 빈도수 다시 계산해 헤더 다시 만들고 전체 다시 압축 후 저장
 void Huffman::compressEntire() {
 	decompress();
 	countFrequencies();
 	buildHuffmanTree();
+	generateCodes();
 	saveCompressedOrder();
 }
 
+// order.txt에 저장된 주문 내역 불러오기
 void Huffman::decompress() {
 	loadHeader();
 	decodeOrder();
 }
 
+// orderLists에 있는 모든 주문 내역 출력
 void Huffman::printDecompressedOrders() {
 	for (int i = 0; i < orderLists.size(); i++) {
 		cout << "Order " << i + 1 << ": ";
@@ -30,6 +35,7 @@ void Huffman::printDecompressedOrders() {
 	}
 }
 
+// order.txt의 헤더(첫번째 줄) 읽어와 huffmanCodes에 저장
 void Huffman::loadHeader() {
 	ifstream menuFile;
 	menuFile.open("order.txt");
@@ -37,7 +43,7 @@ void Huffman::loadHeader() {
 	if (menuFile.is_open()) {
 		string line;
 
-		getline(menuFile, line); // 첫 줄(header)만 읽고 나머지는 무시
+		getline(menuFile, line);
 		istringstream iss(line);
 		string menu;
 		string code;
@@ -50,18 +56,19 @@ void Huffman::loadHeader() {
 		cout << "Unable to open file" << endl;
 }
 
+// order.txt에 헤더와 주문 내역 저장
 void Huffman::saveCompressedOrder() {
 	ofstream orderFile;
 	orderFile.open("order.txt");
 	if (orderFile.is_open()) {
 
-		// Save header
+		// 헤더 저장
 		for (const auto& pair : huffmanCodes) {
 			orderFile << pair.first << " " << pair.second << " ";
 		}
 		orderFile << endl;
 
-		// Save compressed orders
+		// 주문 별 압축된 코드를 order.txt에 저장
 		for (auto& head : orderLists) {
 			Node* current = head.locate(0);
 			while (current != nullptr) {
@@ -77,6 +84,7 @@ void Huffman::saveCompressedOrder() {
 		cout << "Unable to open file" << endl;
 }
 
+// orderLists에서 메뉴별 주문 빈도수 계산
 void Huffman::countFrequencies() {
 	frequencies.clear();
 
@@ -89,7 +97,7 @@ void Huffman::countFrequencies() {
 		}
 	}
 
-	// menu.txt에서 새로 추가된 메뉴 추가
+	// menu.txt에서 새로 추가된 메뉴 추가 (빈도수 0으로 저장)
 	ifstream menuFile;
 	menuFile.open("menu.txt");
 	if (menuFile.is_open()) {
@@ -110,6 +118,7 @@ void Huffman::countFrequencies() {
 
 }
 
+// pq에서 Huffman Tree 생성
 void Huffman::buildHuffmanTree() {
 	// frequencies map을 기반으로 pq에 HNode 삽입
 	while (!pq.empty()) pq.pop();
@@ -129,11 +138,12 @@ void Huffman::buildHuffmanTree() {
 	}
 }
 
+// Huffman Tree 순회하면서 각 메뉴 별 코드 생성
 void Huffman::generateCodes() {
 	huffmanCodes.clear();
 	if (pq.empty()) return;
 	HNode* root = pq.top();
-	// Huffman Tree를 순회하며 각 메뉴에 대한 코드 생성
+	
 	string code = "";
 	stack<pair<HNode*, string>> st;
 	st.push({ root, code });
@@ -158,25 +168,27 @@ void Huffman::generateCodes() {
 	}
 }
 
+// 압축된 주문 코드 복호화해 orderLists에 저장
 void Huffman::decodeOrder() {
-	// 압축된 주문 코드 복호화해 orderLists에 저장
 	orderLists.clear();
 	ifstream orderFile;
 	orderFile.open("order.txt");
 	if (orderFile.is_open()) {
 		string line;
 
+		// huffmanCodes에 있는 (코드, 메뉴)를 codeToMenu에 (메뉴, 코드)로 저장 -> 코드로 메뉴 검색 가능하게 함
 		map<string, string> codeToMenu;
 		for (const auto& pair : huffmanCodes)
 			codeToMenu[pair.second] = pair.first;
 
-		// 첫 줄(header) 건너뛰기
 		getline(orderFile, line);
 		while (getline(orderFile, line)) {
 			LinkedList orderList;
 			string currentCode = "";
+			// 한 줄의 한 글자씩 읽어 currentCode에 추가
 			for (char ch : line) {
 				currentCode += ch;
+				// currentCode가 codeToMenu에 있으면 orderList에 추가
 				if (codeToMenu.count(currentCode)) {
 					orderList.add(codeToMenu[currentCode]);
 					currentCode = "";
