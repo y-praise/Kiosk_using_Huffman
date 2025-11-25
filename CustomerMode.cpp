@@ -95,6 +95,7 @@ void CustomerMode::addToOrder(int num) {
 	orderList.add(menuItems[num]);
 	totalPrice += menuPrices[num];
 	cout << menuItems[num] << " added to order list." << endl;
+	cout << "(Press Enter)" << endl;
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	cin.get();
 }
@@ -131,7 +132,7 @@ void CustomerMode::restoreItem() {
 void CustomerMode::completeOrder() {
 	Huffman huff;
 	huff.compressOrder(orderList);
-	cout << "Order Received! (Implementing)" << endl;
+	cout << "Order Received!" << endl;
 }
 
 void CustomerMode::editOrder() {

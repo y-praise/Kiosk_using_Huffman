@@ -50,7 +50,9 @@ void ManagerMode::run() {
 		{
 			Huffman huff;
 			huff.compressEntire();
-			cout << "Order History Compressed! (Press Enter)" << endl;
+			cout << "Order History Compressed!" << endl;
+			cout << "You can check at 'order.txt'" << endl;
+			cout << "(Press Enter)" << endl;
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			cin.get();
 			break;
